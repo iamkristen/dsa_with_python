@@ -12,32 +12,46 @@ class LinkedList:
         self.head = node
 
     def append(self,data):
+        if self.head is None:
+            self.head = Node(data,None)
+
         itr = self.head
-        last = itr
-        while itr:
-            if(itr.next is None):
-                last = itr
+        while itr.next:
             itr = itr.next
-        last.next = Node(data,None)
+        
+        itr.next = Node(data,None)
 
     def pop(self):
-        itr = self.head
-        itr.data = itr.next.data
-        itr.next = itr.next.next
+        self.head = self.head.next
 
 
     def delete(self):
         itr = self.head
-        prev = itr
-        while itr:
-            
-            if(itr.next is not None):
-                prev = itr
+        while itr.next.next:
             itr = itr.next
-        prev.next = None
+        itr.next = None
 
 
+    def insertAfterValue(self,findValue,insertValue):
+        itr = self.head
+        while itr:
+            if itr.data == findValue:
+                node = Node(insertValue, itr.next)
+                itr.next = node
+            itr = itr.next
 
+    def deleteByValue(self,value):
+        itr = self.head
+        prev = None
+        while itr:
+            if itr.data == value:
+                if prev is not None:
+                    prev.next = itr.next
+                else:
+                    self.head = itr.next
+            prev = itr
+            itr = itr.next
+    
     def printList(self):
         itr  = self.head
         lst = ''
@@ -53,7 +67,48 @@ class LinkedList:
         while itr:
             count+=1
             itr = itr.next
-        print(count)
+        return count
+    
+    def insertAt(self,index,data):
+        if index < 0 or index > self.getLength():
+            raise Exception("Invalid index")
+        if(index == 0):
+            self.push(data)
+            return
+        
+        itr  = self.head
+        count = 0
+        while itr:
+            if(count == index-1):
+                itr.next = Node(data,itr.next)
+                break
+            count+=1
+            itr = itr.next
+
+
+    def deleteAt(self,index):
+        if(index < 0 or index > self.getLength()):
+            raise Exception("Invalid Index")
+        
+        if(index == 0):
+            self.pop()
+        
+        itr = self.head
+        count = 0
+
+        while itr.next:
+            if count == index-1:
+                itr.next = itr.next.next if itr.next.next is not None else None
+            count +=1
+            itr = itr.next
+        
+    def insertValues(self,dataList):
+        if dataList is not None:
+            for data in dataList:
+                self.append(data)
+
+
+     
 
 if __name__ == "__main__":
     root = LinkedList()
@@ -61,10 +116,10 @@ if __name__ == "__main__":
     root.push(6)
     root.push(4)
     root.printList()
-    root.append(8)
+    root.insertAt(1,8)
     root.printList()
-    root.pop()
+    root.insertValues(["car","horse","Bus"])
+    root.insertAfterValue("car","cart")
     root.printList()
-    root.delete()
+    root.deleteByValue(4)
     root.printList()
-    root.getLength()
