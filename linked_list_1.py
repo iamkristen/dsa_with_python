@@ -107,7 +107,25 @@ class LinkedList:
             for data in dataList:
                 self.append(data)
 
+    # def reverse(self):
+    #     prev = None
+    #     current = self.head #5-6-7-8-9
+    #     while(current is not None): 
+    #         next = current.next 
+    #         current.next = prev
+    #         prev = current
+    #         current = next
+    #     self.head = prev
 
+    def reverse(self):
+        current = self.head
+        prev = None
+        while current:
+            next = current.next
+            current.next = prev
+            prev = current
+            current = next
+        self.head = prev
      
 
 if __name__ == "__main__":
@@ -122,4 +140,6 @@ if __name__ == "__main__":
     root.insertAfterValue("car","cart")
     root.printList()
     root.deleteByValue(4)
+    root.printList()
+    root.reverse()
     root.printList()
